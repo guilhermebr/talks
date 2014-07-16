@@ -12,7 +12,7 @@ http://guilhermebr.com
 * Agenda
 
 - Historico
-- Sobre Golang
+- Sobre Go
 - Preparando o Ambiente
 - Projeto
 
@@ -94,6 +94,10 @@ C++, C#, Java, JavaScript, LISP, Python, Scala: Boas e más lições aprendidas
 .link http://www.golangbootcamp.com/
 
 .link http://confreaks.com/events/gophercon2014
+
+- Livro em Português
+
+.link http://www.casadocodigo.com.br/products/livro-google-go
 
 * Instalando Go
 
