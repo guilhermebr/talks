@@ -150,7 +150,7 @@ Partes:
 
 Onde será criado:
 
- $ mkdir $GOPATH/src/github.com/guilhermebr/talks/io_extended_br_gna/projects/twitter
+ $ mkdir $GOPATH/src/github.com/guilhermebr/talks/io_extended_gna/projects/twitter
 
 * OAuth Twitter
 
@@ -234,7 +234,7 @@ Um webservice basico, servindo arquivos estaticos.
 
 Onde será criado:
 
- $ mkdir $GOPATH/src/github.com/guilhermebr/talks/io_extended_br_gna/projects/miniweb
+ $ mkdir $GOPATH/src/github.com/guilhermebr/talks/io_extended_gna/projects/miniweb
 
 
 * Webserver Basico
