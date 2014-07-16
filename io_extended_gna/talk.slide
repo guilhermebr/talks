@@ -1,0 +1,347 @@
+Go, 
+a poderosa linguagem do Google
+25 Jun 2014
+
+Guilherme Rezende
+IPsafe 
+guilhermebr@gmail.com
+http://guilhermebr.com
+@gbrezende
+
+
+* Agenda
+
+- Historico
+- Sobre Golang
+- Preparando o Ambiente
+- Projeto
+
+* Historico
+
+- Iniciado pelo Google em 2007
+- Lançada como Open Source em 2009
+- Versão 1.0 lançada em 2012
+- App Engine utiliza versão 1.2
+- Atualmente na versão 1.4 (06/2014)
+
+* Porquê criar uma nova linguagem?
+
+Combinar os pontos fortes de todas as linguagens.
+
+Linguagem ideal:
+
+- Facilidade de programar das linguagens interpretadas e dinamicamente tipadas
+- Eficiencia e Segurança das linguagens compiladas e estaticamente tipadas 
+- Suporte a rede e computação multicore
+- Concorrente e Garbage Collected
+
+* O que é Go?
+Go is a programming language designed by Google to help solve Google's problems, and Google has big problems.
+
+- Compilada
+- Estaticamente Tipada (mas com sentimento de dinamico)
+- Concorrente
+- Simples
+- Produtiva
+- Divertida
+- UTF-8
+- Sem ponto e virgula =]
+
+* DNA de Go
+
+Idealizadores:
+
+- Ken Thompson
+ one of the original UNIX developers
+
+- Rob Pike
+ one of the original UTF-8 authors
+
+* DNA de Go
+
+- C: sintaxe de instrução e de expressão 
+- Pascal: sintaxe de declaração 
+- Modula 2, Oberon 2: packages 
+- CSP, Occam, Newsqueak, Limbo, Alef: concorrência 
+- BCPL: regra do ponto-e-virgula 
+- Smalltalk: métodos 
+- Newsqueak: <-, := 
+- APL: iota
+
+C++, C#, Java, JavaScript, LISP, Python, Scala: Boas e más lições aprendidas
+
+(* Rob Pike)
+
+* Quem usa?
+
+- Google
+- Bitly
+- Heroku
+- Docker
+- Disqus
+- Canonical
+- Github
+- Globo.com
+
+.link https://code.google.com/p/go-wiki/wiki/GoUsers
+
+* Aprendendo Go 
+
+.link http://tour.golang.org/
+
+.link http://golang.org/doc/effective_go.html
+
+.link http://www.golangbootcamp.com/
+
+.link http://confreaks.com/events/gophercon2014
+
+* Instalando Go
+
+.link http://golang.org/doc/install
+
+- Binário ou Código Fonte
+- 32 e 64-bits e Processadores ARM
+- Windows, Mac OS X, Linux e FreeBSD
+
+* Ambiente
+
+Workspace:
+    
+    $ export GOPATH=$HOME/gocode        # Ou o local que você preferir
+    $ export GOBIN=$GOPATH/bin          # Binários
+    $ export PATH=$PATH:$GOBIN    
+    $ mkdir -p $GOPATH/src              # Aqui ficará todos os códigos fonte
+
+Criado Automático:
+    
+    $ $GOPATH/pkg                       # Pacotes
+
+- Crie seus projetos em:
+    
+    $ mkdir $GOPATH/src/github.com/{USUARIO}   # Recomendação
+
+* Ferramentas
+ 
+- go run
+
+- go build
+
+- go clean
+
+- go install
+
+- go get
+
+- go test
+
+- go fmt
+
+- godoc
+
+
+* Projeto Twitter Tags
+
+Um app que lê e imprime tudo que esta sendo dito no twitter sobre o #io14extended
+
+Partes:
+- Obter token temporario do Twitter
+- Enviar requisição para Twitter atráves de sua API
+- Imprimir retorno
+
+Onde será criado:
+
+ $ mkdir $GOPATH/src/github.com/guilhermebr/talks/io_extended_br_gna/projects/twitter
+
+* OAuth Twitter
+
+Acesse:
+
+.link https://dev.twitter.com/console
+
+Em Authentication coloque: OAuth 1 (Pedirá autorização para acessar sua conta)
+
+Request URL coloque: GET
+
+Em url: https://api.twitter.com/1.1/search/tweets.json?q=%23io14extended
+
+Clique em Send, e copie o valor de Authentication
+
+* Pacotes e Estruturas
+
+    package main
+
+    import (
+        "encoding/json"
+        "fmt"
+        "net/http"
+    )
+
+- Estrutura Json para decode
+
+    type Item struct {
+        Id_str string
+        Text   string
+        User   struct {
+            Name        string
+            Screen_name string
+        }
+    }
+
+    type Response struct {
+        Statuses []Item
+    }
+
+* Função GetTag
+
+    func GetTag(hashtag string) {
+        url := "https://api.twitter.com/1.1/search/tweets.json?q=%23" + hashtag
+        oauth := `OAuth ...` // Coloque Authentication obtido anteriormente
+
+        client := &http.Client{}
+        req, _ := http.NewRequest("GET", url, nil)
+        req.Header.Add("Authorization", oauth)
+
+        resp, err := client.Do(req)
+
+        defer resp.Body.Close()
+
+        if err != nil {
+            log.Fatal(err)
+        }
+
+        r := new(Response)
+        err = json.NewDecoder(resp.Body).Decode(r)
+
+        for _, child := range r.Statuses {
+            fmt.Printf("@%s -> %s\n", child.User.Screen_name, child.Text)
+        }
+    }
+
+* Main
+
+    func main() {
+        GetTag("io14extended")
+    }
+
+- Run
+
+    $ go run twitter.go
+
+* Projeto MiniWeb
+
+Um webservice basico, servindo arquivos estaticos.
+
+
+Onde será criado:
+
+ $ mkdir $GOPATH/src/github.com/guilhermebr/talks/io_extended_br_gna/projects/miniweb
+
+
+* Webserver Basico
+
+.play projects/server.go
+
+* Servindo Arquivos Estaticos
+
+    func main() {
+        http.Handle("/img/", http.StripPrefix("/img/", http.FileServer(http.Dir("static/img"))))
+        http.Handle("/js/", http.StripPrefix("/js/", http.FileServer(http.Dir("static/js"))))
+        http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("static/css"))))
+
+        http.HandleFunc("/", handler)
+        http.ListenAndServe(":8080", nil)
+    }
+
+* Templates
+
+    var templates *template.Template
+
+    func main() {
+        templates = template.Must(template.ParseGlob("views/*.html"))
+        
+        http.Handle("/img/", http.StripPrefix("/img/", http.FileServer(http.Dir("static/img"))))
+        http.Handle("/js/", http.StripPrefix("/js/", http.FileServer(http.Dir("static/js"))))
+        http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("static/css"))))
+
+        http.HandleFunc("/", handler)
+        http.ListenAndServe(":8080", nil)
+    }
+
+* Index.html
+
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>{{.Title}}</title>
+        <script src="js/jquery.min.js" type="text/javascript"></script>
+        <link rel="stylesheet" href="/css/ioextended.css" >
+
+      </head>
+      <body>
+     
+        <h2> Go Gophers! </h2>
+        <img src="img/gophers.jpg">
+        
+      </body>
+    </html>
+
+
+
+* Index Handler
+
+    func handler(w http.ResponseWriter, r *http.Request) {
+
+        var IndexVars struct {
+            Title string
+        }
+
+        IndexVars.Title = "Google IO Extended 2014"
+        err := templates.ExecuteTemplate(w, "index.html", IndexVars)
+
+        if err != nil {
+            http.Error(w, err.Error(), http.StatusInternalServerError)
+            return
+        }   
+    }
+
+- Run
+
+    $ go run miniweb.go
+
+
+* Curiosidade Func
+
+Aside: Mail thread from February 6, 2008
+From: Ken Thompson <ken@google.com> 
+To: gri, r
+larry and sergey came by tonight. we 
+talked about go for more than an hour. 
+they both said they liked it very much.
+p.s. one of larrys comments was "why isnt function spelled func?"
+---
+From: Rob Pike <r@google.com> 
+To: ken, gri
+fine with me. seems compatible with 'var'.
+anyway we can always say, "larry said to call it 'func'"
+
+* Android
+
+Go support for Android
+
+David Crawshaw
+June 2014
+
+Abstract
+
+We propose to introduce Go support for the Android platform. The focus will be on supporting games written in Go. The APIs will be those defined in the Android NDK.
+
+* Apresentação e Codigos
+
+.link http://github.com/guilhermebr/talks/io_extended_gna/projects
+
+.link http://go-talks.appspot.com/github.com/guilhermebr/talks/io_extended_gna/talk.slide
+
+* Venha ser um Gopher!
+
+.link https://www.facebook.com/groups/gogophers/
+.image gophers.jpg 500 700
