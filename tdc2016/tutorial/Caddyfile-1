@@ -1,0 +1,10 @@
+# Caddyfile
+
+localhost:2015
+ext .html
+gzip
+browse
+log logs/access.log
+errors {
+    404 404.html
+}

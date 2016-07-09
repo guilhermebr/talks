@@ -1,0 +1,12 @@
+# Caddyfile
+localhost
+
+ext .html
+gzip
+log stdout
+errors { 
+    404 404.html
+}
+
+slack T024Z4TDT/B1NNW1YBZ/R08d98T94dPfsN5adHABlSs3 
+

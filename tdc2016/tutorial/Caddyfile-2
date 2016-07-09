@@ -1,0 +1,20 @@
+localhost
+
+ext .html
+gzip
+log stdout
+
+rewrite {
+    r "/(.+)"
+    if {path} not_match /static
+    if {path} not_match /favicon.ico
+    to /api/{uri}
+}
+
+proxy /api http://backend:3000 {
+    without /api
+    proxy_header Host {host}
+	proxy_header X-Real-IP {remote}
+	proxy_header X-Forwarded-Proto {scheme}
+}
+header /api Access-Control-Allow-Origin *

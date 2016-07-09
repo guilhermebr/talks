@@ -1,0 +1,36 @@
+.header { 
+  background: no-repeat bottom left; 
+  /*background-color: #E9E9E9;*/
+  background-size: cover; 
+  height: 200px;
+  margin-bottom: 50px;
+}
+
+.content {
+  padding-top: 50px;
+  padding-bottom: 80px;
+  text-align: center;
+
+}
+
+.logo > img {
+  float:left;
+}
+
+.logo > h1 {
+    padding-top: 60px;
+    font-weight: bold;
+      color:#cfd3d7;
+
+}
+
+#shorten-message.success {
+	font-size: 18px;
+	font-weight: bold;
+	color: blue;
+}
+
+#shorten-message.error {
+	font-size: 14px;
+	color: red;
+}

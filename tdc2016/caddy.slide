@@ -1,0 +1,267 @@
+Caddy Web Server
+TDC Sao Paulo
+09 Jul 2016
+
+Guilherme Rezende
+@gbrezende
+guilhermebr@gmail.com
+https://github.com/guilhermebr
+https://www.linkedin.com/in/guilhermebr
+
+* Quem?
+
+- Fundador da empresa IPSafe
+- Engenheiro de Software na startup Nuveo SmartCloud
+- Engenheiro de Software na Gopath.io
+- Apaixonado por Open Source, Linux, SO, Network, Sistemas Distribuidos, API, DevOps, MicroServices, Integração.*
+- Gopher S2
+
+* O que é Caddy?
+
+* O que é Caddy?
+
+- Web Server escrito em Go (statics, reverse proxy)
+- Desenhado para humanos (i.e. non-dev)
+- Web atual em mente
+- Markdown, IPV6, WebSockets, FastCGI, Templates, API
+- Native HTTP/2 (Go stdlib)
+- HTTPS Automático.
+- Extensivel
+
+* Motivação
+
+- Dificuldade em configurar php-cgi no nginx (muitas formas)
+- Aprendendo Go, queria colocar em prática
+- Estava de Férias na faculdade
+
+* Overview
+
+- Caddy 0.5 - 28/04/2015 - Anunciado 
+- Caddy 0.8 - 04/12/2015 - HTTPS Automático
+- Caddy 0.9 - 07/06/2016 - Nova Arquitetura + Plugins
+- 6,613 Estrelas no Github
+- 87 Contribuidores
+- 11 Plugins (oficiais) da Comunidade
+- Changelog Podcast
+- API is comming... 
+
+* Overview
+
+.image img/caddy-announce.png _ 600
+
+* Diferencial
+
+- Configuração default
+- Caddyfile
+- Plugins
+- Binario em https://caddyserver.com/download
+- Codigo idiomatico
+
+* Demo
+
+* caddy-examples
+
+.link http://github.com/caddyserver/examples
+
+Fork + Docker
+
+.link http://github.com/guilhermebr/caddy-examples
+
+* Site estático (sem caddyfile)
+
+    $ cd caddy-examples/html
+    $ caddy -log stdout
+
+.link http://localhost:2015
+
+: acessar /teste
+: acessar /static
+
+* Site estático (com caddyfile)
+
+.code tutorial/Caddyfile-1
+
+    $ cd caddy-examples/html
+    $ caddy -conf Caddyfile-1
+
+: acessar /teste
+: acessar /static
+
+* Django
+
+.code caddy-examples/django/Caddyfile
+
+    $ docker-compose up -d django-server django-front
+
+* Wordpress
+
+.code caddy-examples/wordpress/Caddyfile
+
+    $ docker-compose up -d wp-server wp-front
+
+* HTTPS Automático
+
+
+* Let's Encrypt
+
+- Certificate Authority
+- Free, Open and Automated
+- Internet Security Research Group (ISRG)
+- Automated Certificate Management Environment (ACME)
+- letsencrypt/boulder (Implementação Protocolo ACME em Go)
+
+.link https://letsencrypt.org/
+
+* Let's Encrypt Challenges
+
+- Key Pair
+- DNS record
+- HTTP resource under a well-known URI
+
+* Let's Encrypt Challenges
+
+.image img/le1.png
+
+* Let's Encrypt Challenges
+
+.image img/le2.png
+
+* Caddy TLS Plugin
+
+- xenolf/lego
+- Challenge Solver
+ HTTP, TLS-SNI e DNS
+- Caddyfile:
+ domain
+ porta !80
+ tls sem cert-files
+- Problema com Load balance
+
+* Caddyfile
+
+ backenderia.com:443
+
+ root /site/src/
+
+ startup "sh /site/start.sh"
+
+ proxy  /api http://backend:3000/ {
+     without /api
+ }
+
+ tls guilhermebr@gmail.com
+
+* Plugins
+
+- Tudo no Caddy é Plugin
+
+* Server Type
+
+- Listen() and Serve()
+- mail, ssh, tcp, dns, whatever
+- Estrutura Caddyfile
+- Directives
+- Magic TLS Features
+
+ caddy.RegisterServerType("http", caddy.ServerType{Directives,...})
+
+* DNS Provider
+
+- HTTP, TLS-SNI, e *DNS*
+- https://github.com/caddyserver/dnsproviders
+- Cloudflare, DigitalOcean, Route53, GoogleCLoud...
+- Criar um Provider
+
+ func init() {
+    caddytls.RegisterDNSProvider("myprovider", NewDNSProvider)
+ }
+
+- Caddyfile
+ tls {
+    dns myprovider
+ }
+
+* Directives
+
+- Servertype http: 
+ gzip, fastcgi, proxy, rewrite, redir, git, search,...
+
+- Geral: 
+ tls
+
+Code
+
+ func init() {
+     caddy.RegisterPlugin("git", caddy.Plugin{
+         ServerType: "http",
+         Action:     setup,
+     })
+ }
+
+* Criando um Plugin
+
+* Demo
+
+- Slack WebHook Logs
+
+.link https://api.slack.com/incoming-webhooks
+.link https://github.com/guilhermebr/caddy-slack
+
+* CoreDNS
+
+- Caddy Fork
+- Voltando ao Caddy como ServerType plugin
+
+.link https://github.com/miekg/coredns
+
+* Embedding Caddy
+
+- Caddy como package do seu programa
+
+ caddy.AppName = "Sprocket"
+ caddy.AppVersion = "1.2.3"
+
+ // pass in the name of the server type this Caddyfile is for (like "http")
+ caddyfile, err := caddy.LoadCaddyfile(serverType)
+ if err != nil {
+     log.Fatal(err)
+ }
+
+ instance, err := caddy.Start(caddyfile)
+ if err != nil {
+     log.Fatal(err)
+ }
+
+ // Start() only blocks until the servers have started.
+ // Wait() blocks until the servers have stopped.
+ instance.Wait()
+
+* CaddyHub
+
+- Caddy Distribuido 
+- https://github.com/backenderia/caddyhub
+
+- hub example
+ @hub {
+     # address that the hub will listen
+     bind 0.0.0.0:2016
+ }
+
+- client example
+ @client {
+     # hubs to connect (separated by commas)
+     register 127.0.0.1:2016
+ }
+
+ # virtual host configuration running on this caddy instance
+ 0.0.0.0:3000 {
+     browse
+ }
+
+* Contribuindo com Caddy
+
+- https://caddyserver.com/docs
+- https://github.com/mholt/caddy/ [Wiki]
+- http://forum.caddyserver.com
+- Gophers Slack
+
