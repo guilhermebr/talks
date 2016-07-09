@@ -1,0 +1,11 @@
+0.0.0.0:2015
+root /var/www/html
+
+log stdout
+
+gzip
+fastcgi / wp-server:9000 php
+rewrite {
+    if {path} not_match ^\/wp-admin
+    to {path} {path}/ /index.php?_url={uri}
+}
