@@ -1,0 +1,11 @@
+0.0.0.0:2015 {
+	log stdout
+
+	proxy / django-server:8000 {
+		proxy_header Host {host}
+		proxy_header X-Forwarded-Proto {scheme}
+		except /media /static
+	}
+
+	root /app
+}
