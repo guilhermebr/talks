@@ -292,7 +292,8 @@ Globo.com
 
   $ tsuru app-create qconsp python
 
-  $ tsuru env-set LOG_LEVEL="DEBUG" ALLOW_UNSAFE_URL="True" DETECTORS="['thumbor.detectors.face_detector', 'thumbor.detectors.feature_detector']" -a qconsp
+  $ tsuru env-set LOG_LEVEL="DEBUG" ALLOW_UNSAFE_URL="True" \
+      DETECTORS="['thumbor.detectors.face_detector', 'thumbor.detectors.feature_detector']" -a qconsp
 
   $ tsuru app-deploy -i apsl/thumbor:latest -a qconsp
 
