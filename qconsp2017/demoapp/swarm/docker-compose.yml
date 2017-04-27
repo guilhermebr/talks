@@ -1,0 +1,15 @@
+version: '3.1'
+services:
+  thumbor:
+    image: apsl/thumbor:latest
+    environment:
+      - ALLOW_UNSAFE_URL=True
+      - DETECTORS=['thumbor.detectors.face_detector','thumbor.detectors.feature_detector']
+      - LOG_LEVEL=debug
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+    restart: always
+    ports:
+      - "80:8000"

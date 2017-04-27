@@ -1,0 +1,13 @@
+name: tsuru-qconsp
+components:
+    tsuru:
+        version: latest
+driver:
+    name: google
+    private-ip-interface: ens4
+    options:
+      google-project: qconsp-demo
+      google-tags: tsuru
+      google-open-port:
+        - 8080/tcp
+        - 80/tcp

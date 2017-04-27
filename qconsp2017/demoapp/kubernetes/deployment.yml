@@ -1,0 +1,30 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: thumbor
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: thumbor
+      version: "latest"
+  template:
+    metadata:
+      name: thumbor
+      labels:
+        app: thumbor
+        version: "latest"
+    spec:
+      containers:
+      - name: thumbor
+        image: apsl/thumbor:latest
+        env:
+        - name: LOG_LEVEL
+          value: "DEBUG"
+        - name: ALLOW_UNSAFE_URL
+          value: "True"
+        - name: DETECTORS
+          value: "['thumbor.detectors.face_detector', 'thumbor.detectors.feature_detector']"
+        - name: THUMBOR_PORT
+          value: "8000"
+        imagePullPolicy: Always

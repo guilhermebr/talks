@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: thumbor
+  labels:
+    app: thumbor
+spec:
+  ports:
+  - port: 8000
+    nodePort: 30000
+  selector:
+    app: thumbor
+  type: NodePort
