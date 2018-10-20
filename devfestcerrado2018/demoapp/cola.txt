@@ -1,0 +1,60 @@
+# Google Cloud
+
+gcloud init
+gcloud auth application-default login
+gcloud projects create devfest
+gcloud config set project devfest
+
+
+##Create Kubernetes Cluster
+
+gcloud container clusters create devfest-demo
+gcloud container clusters list
+gcloud compute instances list |grep gke
+gcloud container clusters get-credentials devfest-demo
+
+# Deploy microservices
+kubectl apply -f deployments/thumbor.yml
+kubectl apply -f deployments/redis.yml
+kubectl apply -f deployments/app-resize.yml
+
+# Install Helm, Prometheus and Grafana
+
+kubectl create -f demoapp/create-heml-service-account.yaml
+helm init --service-account helm
+
+helm install --name prometheus stable/prometheus -f demoapp/charts/prometheus/values.yaml
+helm install --name grafana stable/grafana -f demoapp/charts/grafana/values.yaml
+
+# Grafana dashboards
+3131 - kube
+
+#End
+gcloud container clusters delete devfest-demo
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# cheets
+
+kubectl config use-context minikube
+gcloud container clusters get-credentials devfest-demo
+
+minikube service app-resize --url
+minikube service grafana --url
+
+kubectl --namespace default port-forward $PROMETHEUS_POD 9090

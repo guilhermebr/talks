@@ -1,0 +1,130 @@
+Micro-serviços em Produção com Kubernetes, Prometheus e Grafana
+DevFest Cerrado
+20 Oct 2018
+
+Guilherme Rezende
+Globo.com
+@gbrezende
+
+* About me
+
+- Software Engineer at Globo.com
+- Tsuru Team (tsuru.io)
+
+Social
+
+- github.com/*guilhermebr*
+- in/*guilhermebr*
+- twitter.com/*gbrezende*
+
+* Agenda
+
+- Microservices
+- Containers
+- Orchestration
+- Kubernetes
+- Instrumentation
+- Prometheus
+- Grafana
+- Demo
+
+* Microservice
+
+- Small services :)
+- Cloud Native App
+- 12Factor Manifesto
+- Born to be Containerized
+- Ephemeral File System
+- Endpoint for Healthcheck
+- Endpoint for Metrics
+- Stateless
+- Horizontal Scalable
+
+* Containers
+
+- 2000: Jails - FreeBSD
+- cgroups: Restrict resources (CPU, memory, disk IO, ...)
+- namespaces: Process's view of the system (network, PIDs, users, mounts,...)
+- chroots
+- LXC by IBM 2008
+- Docker 2013 - focus on developers
+- OCI (image-spec, runtime-spec, runC, containerd, cri-o)
+
+* Orchestration
+
+- *Scheduling*: Where should my containers run?
+- *Lifecycle* and *health*: Keep my containers running despite failures
+- *Discovery*: Where are my containers now?
+- *Monitoring*: What's happening with my containers?
+- *Auth{n,z}*: Control who can do things to my containers
+- *Scalling*: Making jobs bigger or smaller
+
+* Kubernetes
+
+- Greek for "Helmsman"
+- Based on Google Borg - Cluster Manager
+- Google, RedHat, Microsoft, CoreOS, ...
+- Open Source
+- Written in Go ❤
+- Member of the Cloud Native Computing Foundation
+
+* Kubernetes Archicteture
+
+.image img/kube-arch.png 500 0
+
+* Kubernetes Archicteture: Pods
+
+.image img/kube-pods.png
+
+* Google Kubernetes Engine
+
+- Managed Kubernetes from Google
+- Google runs the Kubernetes master and etcd instances
+- Nodes are "provided" by Google Cloud Platform
+- https://console.cloud.google.com/freetrial
+
+* Instrumentation
+
+Ability to monitor or measure the level of a product's performance, to diagnose errors and to write trace information.
+
+* Prometheus
+
+- Monitoring and Alerting system (https:// prometheus.io/)
+- Created by SoundCloud
+- Pull based (HTTP)
+- Flexible query language
+- Open Source
+- Written in Go ❤
+- Member of the Cloud Native Computing Foundation
+
+* Grafana
+
+The open platform for beautiful analytics and monitoring
+
+- Open Source
+- Written in Go ❤
+- Member of the Cloud Native Computing Foundation
+
+* Demo
+
+- Basic Go Application to resize Images
+- Redis for Cache
+- Smart Imaging Service
+- Thumbor ❤ by globo.com
+
+* Demo
+
+.link github.com/guilhermebr/talks/devfestcerrado2018
+
+* Demo
+
+.image img/demo1.png
+
+* Hacktoberfest
+
+.link https://opensource.globo.com/hacktoberfest
+.image img/hacktoberglobo.png 500 0
+
+* We are Hiring
+
+.link http://talentos.globo.com

@@ -1,0 +1,46 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: thumbor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: thumbor
+  template:
+    metadata:
+      name: thumbor
+      labels:
+        app: thumbor
+    spec:
+      containers:
+      - name: thumbor
+        image: 10.200.10.1:5000/apsl/thumbor:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: LOG_LEVEL
+          value: "DEBUG"
+        - name: ALLOW_UNSAFE_URL
+          value: "False"
+        - name: SECURITY_KEY
+          value: "devfest2018"
+        - name: DETECTORS
+          value: "['thumbor.detectors.face_detector', 'thumbor.detectors.feature_detector']"
+        - name: THUMBOR_PORT
+          value: "8000"
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: thumbor
+  labels:
+    app: thumbor
+spec:
+  ports:
+  - port: 8000
+    targetPort: 8000
+  selector:
+    app: thumbor

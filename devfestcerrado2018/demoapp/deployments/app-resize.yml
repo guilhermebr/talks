@@ -1,0 +1,61 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: app-resize
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: app-resize
+        tier: frontend
+        version: goinfra
+    spec:
+      containers:
+      - name: app-resize
+        image: guilhermebr/app-resize-demo:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: PORT
+          value: "80"
+        - name: REDIS_HOST
+          value: "redis-master"
+        - name: REDIS_PORT
+          value: "6379"
+        - name: THUMBOR_HOST
+          value: "thumbor"
+        - name: THUMBOR_PORT
+          value: "8000"
+        - name: THUMBOR_SECRET
+          value: "devfest2018"
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: app-resize
+  labels:
+    app: app-resize
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: app-resize
+  type: LoadBalancer
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: app-resize-internal
+  labels:
+    app: app-resize-internal
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: app-resize
