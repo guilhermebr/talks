@@ -1,0 +1,214 @@
+Microservices with Go
+Tilix Conference
+24 Apr 2019
+
+Guilherme Rezende
+Globo.com
+@gbrezende
+
+* About me
+- Software Engineer at Globo.com
+- Tsuru Team (tsuru.io)
+
+Social
+
+- github.com/*guilhermebr*
+- in/*guilhermebr*
+- twitter.com/*gbrezende*
+
+* Agenda
+
+- Monolithic
+- Microservices
+- Go
+- Microservices with Go
+- Authentication / Authorization
+- Hands On
+- Serverless / Functions
+
+* Monolithics vs Microservices
+
+* Monolithics vs Microservices
+
+.image img/microservices-01.png
+
+* Monolithic
+
+- Simplicity
+- Monolithic code base
+- Monolithic database
+- Tighly coupled architecture
+
+* Microservices
+
+'…the	microservice	architectural	style	is	an
+approach	to	developing	a	single	application	as	a
+suite	of	small	services,	each	running	in	its	own
+process	and	communicating	with	lightweight
+mechanisms,	often	an	HTTP	resource	API.'
+- *Martin*	*Fowler*
+
+* Microservices
+
+- 12Factor Manifesto
+- Cloud Native App
+- Ephemeral File System
+- Resilient
+- Preferably Stateless
+- Horizontal Scalable
+- Single business logic
+- Hide your data
+- Design for failure
+- DevOps Culture
+
+* Microservices benefits
+
+- Easier to scale
+- Clear ownership
+- Easier to maintain and evolve
+- New releases take minutes
+- Increased agility
+- Faster innovation
+
+* Microservice performance gotchas
+
+- Slow data serialization
+- Network contention
+
+
+* From Monolithic to Microservices
+
+.image img/monolith2micro.png 500 800
+
+* Go
+
+* Why Go?
+
+.image img/gopher.jpg
+
+* Why Go?
+
+.play why.go
+
+* Go: the language of the cloud.
+
+- Small footprint runtime
+- Modern and efficient networking
+- Open source
+
+* Who uses Go?
+
+- Kubernetes
+- Docker
+- Uber
+- Dropbox
+- Twitter
+- Google
+- Tilix
+- ...
+
+* Go at Globo.com
+
+- G1
+- Cartola
+- GloboID
+- Cassino
+- Tsuru :)
+- ...
+
+* Microservices with Go
+
+"[...] if you're building a server, I can't Imagine
+using anything other than Go"
+- Ryan Dahl
+
+- *Ryan* *Dahl* is a software engineer and *original* *developer* of *Node.js* *javascript* *runtime*
+
+.image img/gopher_glasses.png
+
+* Authentication /  Authorization
+
+- Client Token
+- Single sing-on
+- API Gateway
+
+* Client Token
+
+* JSON Web Tokens (JWT)
+
+Compact, self-contained method for transferring secure data as a JSON object.
+
+- RFC 7519
+- Signed (HMAC algorithm, public/private key pair RSA)
+- Authentication (Stateless)
+- Information Exchange
+
+* JWT Struct
+
+- Header
+  {
+    "alg": "HS256",
+    "typ": "JWT"
+  }
+
+- Payload
+  {
+    "sub": "1234567890",
+    "name": "John Doe",
+    "admin": true
+  }
+
+- Signature
+  HMACSHA256(
+    base64UrlEncode(header) + "." +
+    base64UrlEncode(payload),
+    secret)
+
+* JWT Encoded
+
+- Token
+   eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+   eyJzdWIiOiIxMjM0NTQ0NDY3ODkwIiwibmFtZSI6IkphbWVzaG4gRG9lIiwiYWRtaW4iOnRydWV9.
+   XdIyfynto3N3IbzjQ0BDhDdW1uIgPmbvfvuTTUjWeDk
+
+- How to use
+  curl -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIs...' http://127.0.0.1:5000/secure
+
+- More info
+.link https://jwt.io/
+
+* Hands On
+
+.image img/gopher_mic_drop.png 300 250
+
+
+* Serverless / Functions
+
+- Serverless for the Dev
+- Run code without managing servers
+- CGI (request in, start process to handle it, return something)
+- HotFunctions
+
+* To Learn
+
+- gRPC (grpc.io)
+- GraphQl (graphql.org)
+
+* Convinced of Go?
+
+* Gopher
+
+.image img/gopher_rm.png 400 600
+
+* Gopher
+
+.image img/gopher-gotham.png
+
+* Gophercon Brasil
+
+.image img/gophercon-floripa.png 300 300
+- 26 a 28 Setembro 2019
+- Canasvieiras - Floripa
+
+.link gopherconbr.org
+
